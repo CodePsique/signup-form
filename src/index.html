@@ -4,17 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/style.css">
-  
+
+  <script src="submit.js"></script>
+
   <title>Inscricao CodePsique</title>
 </head>
 <body>
-
   <div class="container">
     <div class="form-image">
       <img src="assets/img/logo - final.png" alt="">
     </div>
     <div class="form sb-hidden">
-      <form action="#">
+      <form action="#"  id="registration-form">
         <div class="form-header">
           <h1 class="title">
             Inscreva-se!
@@ -23,24 +24,24 @@
           <div class="input-group">
 
             <div class="input-box">
-              <label for="full-name">Nome Completo</label>
-              <input id="full-name" type="text" name="full-name" placeholder="Digite seu nome completo" required> 
+              <label for="name">Nome Completo</label>
+              <input id="name" type="text" name="name" placeholder="Digite seu nome completo" required> 
             </div>
               <div class="input-box">
                 <label for="email">Endereço de E-mail</label>
-                <input id="email" type="email" name="email" placeholder="Digite seu email" required> 
+                <input id="email" type="text" name="email" placeholder="Digite seu email" required> 
               </div>
               <div class="input-box">
-                <label for="number">WhatsApp</label>
-                <input id="number" type="tel" name="number" placeholder="( ) ______-____" required> 
+                <label for="whatsapp">WhatsApp</label>
+                <input id="whatsapp" type="text" name="whatsapp" placeholder="( ) ______-____" required> 
               </div>
-            <div class="input-box">
+              <div class="input-box">
               <label for="expectations">Expectativas no Grupo de Estudos</label>
               <textarea id="expectations" name="expectations" rows="4" placeholder="Descreva suas expectativas em relação ao grupo de estudos"></textarea>
             </div>
             <div class="input-box">
-              <label for="how-you-heard">Como você conheceu o CodePsique</label>
-              <input id="how-you-heard" type="text" name="how-you-heard" placeholder="Explique como você ficou sabendo do grupo de estudos">
+              <label for="discovery">Como você conheceu o CodePsique</label>
+              <input id="discovery" type="text" name="discovery" placeholder="Explique como você ficou sabendo do grupo de estudos">
             </div>
             <div class="input-box">
               <label for="availability">Os encontros serão quinzenais. Quando você prefere que ocorram?</label>
@@ -62,14 +63,11 @@
             </div>
             
             <div class="sign-up" >
-              <button class="button-53">Inscrever-se</button>
+              <button id="signup" class="button-53" type="submit">Inscrever-se</button>
             </div>
-      </div>
-      <div class="input-group">
-        
-        
+          </div>
         </div>
-      </div>
+        
       </form>
     </div>
   </div>

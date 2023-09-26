@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "whatsapp" SET DATA TYPE TEXT;

@@ -15,7 +15,7 @@ model User {
   createdAt DateTime @default(now())
   name String
   email String
-  whatsapp Int
+  whatsapp String
   expectations String
   availability String
   discovery String
