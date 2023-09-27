@@ -13,10 +13,10 @@ app.register(cors, {
 
 const prisma = new PrismaClient()
 
-const publicFolderPath = path.join(__dirname, './');
+const publicFolderPath = path.join(__dirname, 'src');
 
 app.get('/', (request, reply) => {
-  const indexPath = path.join(publicFolderPath, 'index.html');
+  const indexPath = path.join(publicFolderPath, '/src/index.html');
 
   fs.readFile(indexPath, 'utf-8', (err, fileContent) => {
     if (err) {
