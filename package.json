@@ -3,14 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "18"
+  },
   "scripts": {
-    "dev": "tsx src/server.ts"
+    "dev": "tsx src/server.ts",
+    "build": "tsc ./src/*.ts",
+    "start": "node ./src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.6.3",
+    "esbuild-plugin-html": "^1.0.0",
     "prisma": "^5.3.1",
     "tsup": "^7.2.0",
     "tsx": "^3.12.10",
