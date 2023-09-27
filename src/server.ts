@@ -1,7 +1,7 @@
 import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
-import path from 'path';
-import fs from 'fs';
+import * as path from 'path';
+import * as fs from 'fs';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
