@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import fastify from "fastify";
 import { z } from 'zod';
 import cors from '@fastify/cors';
+import fs from 'fs';
+import path from 'path';
 
 const app = fastify();
 app.register(cors, {
@@ -9,6 +11,21 @@ app.register(cors, {
 });
 
 const prisma = new PrismaClient()
+
+const publicFolderPath = path.join(__dirname, './');
+
+app.get('/', (request, reply) => {
+  const indexPath = path.join(publicFolderPath, 'index.html');
+
+  fs.readFile(indexPath, 'utf-8', (err, fileContent) => {
+    if (err) {
+      reply.status(500).send('Internal Server Error');
+      return;
+    }
+    reply.type('text/html').send(fileContent);
+  });
+});
+
 
 app.get('/users', async () => {
   const users = await prisma.user.findMany();
