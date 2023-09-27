@@ -2,33 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import fastify from "fastify";
 import { z } from 'zod';
 import cors from '@fastify/cors';
-import * as fs from 'fs';
-import * as path from 'path';
-
 
 const app = fastify();
 app.register(cors, {
   origin: '*',
 });
-
-const publicFolderPath = path.join(__dirname, 'src');
-
-app.get('/', (request, reply) => {
-  const indexPath = path.join(publicFolderPath, 'index.html');
-  
-  // Leia o conteúdo do arquivo
-  fs.readFile(indexPath, 'utf-8', (err, fileContent) => {
-    if (err) {
-      // Se ocorrer um erro ao ler o arquivo, envie uma resposta de erro
-      reply.status(500).send('Internal Server Error');
-      return;
-    }
-
-    // Envie o conteúdo do arquivo HTML como resposta
-    reply.type('text/html').send(fileContent);
-  });
-});
-
 
 const prisma = new PrismaClient()
 
