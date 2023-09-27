@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 import { PrismaClient } from "@prisma/client";
 import fastify from "fastify";
+=======
+import fastify from 'fastify';
+import fastifyStatic from 'fastify-static';
+import * as fs from 'fs';
+import * as path from 'path';
+import { PrismaClient } from '@prisma/client';
+>>>>>>> c13e084 (fix imports in server.ts)
 import { z } from 'zod';
 import cors from '@fastify/cors';
 import * as fs from 'fs';
