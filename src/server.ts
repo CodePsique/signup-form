@@ -16,8 +16,8 @@ const prisma = new PrismaClient()
 const srcFolderPath = path.join(__dirname, 'src');
 
 app.get('/', (request, reply) => {
-  const indexPath = path.join(srcFolderPath, './index.html');
-1
+  const indexPath = path.join(srcFolderPath, 'index.html');
+
   fs.readFile(indexPath, 'utf-8', (err, fileContent) => {
     if (err) {
       reply.status(500).send('Internal Server Error');
