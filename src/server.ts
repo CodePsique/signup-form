@@ -3,7 +3,7 @@ import fastify from "fastify";
 import { z } from 'zod';
 import cors from '@fastify/cors';
 import multer from 'fastify-multer';
-import path from 'path';
+import * as path from 'path';
 
 declare module 'fastify' {
   interface FastifyRequest {
