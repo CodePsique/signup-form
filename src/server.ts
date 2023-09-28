@@ -31,14 +31,26 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype === 'image/png' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'image/heic'
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error('Tipo de arquivo não suportado. Apenas imagens JPEG, PNG e GIF são permitidas.'));
+    }
+  },
+});
 
 app.get('/users', async () => {
   const users = await prisma.user.findMany();
 
   return { users };
 });
-
 
 app.post('/users', { preHandler: upload.single('profile') }, async (request, reply) => {
   try {
@@ -59,7 +71,6 @@ app.post('/users', { preHandler: upload.single('profile') }, async (request, rep
       availability,
       discovery,
     } = createUsersSchema.parse(request.body);
-
 
     const profileImage = request.file.filename;
 
