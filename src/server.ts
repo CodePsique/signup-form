@@ -2,11 +2,19 @@ import { PrismaClient } from "@prisma/client";
 import fastify from "fastify";
 import { z } from 'zod';
 import cors from '@fastify/cors';
+import multipart from '@fastify/multipart';
+import * as fs from 'fs';
+import util from 'util';
+import { pipeline } from 'stream';
 
 const app = fastify();
 app.register(cors, {
   origin: '*',
 });
+
+app.register(multipart);
+
+const pump = util.promisify(pipeline);
 
 const prisma = new PrismaClient()
 
@@ -23,8 +31,16 @@ app.post('/users', async (request, reply) => {
     whatsapp: z.string(),
     expectations: z.string(),
     availability: z.string(),
-    discovery: z.string()
+    discovery: z.string(),
+    profileImage: z.string()
   });
+
+  const upload = await request.file();
+  if (!upload) {
+    return reply.status(400).send({message: 'File is required.'});
+  }
+
+  await pump(upload.file, fs.createWriteStream(`./uploads/${upload.filename}`));
   
   const { 
     name,
@@ -32,7 +48,7 @@ app.post('/users', async (request, reply) => {
     whatsapp,
     expectations,
     availability,
-    discovery 
+    discovery,
   } = createUsersSchema.parse(request.body);
 
   await prisma.user.create({
@@ -42,7 +58,8 @@ app.post('/users', async (request, reply) => {
       whatsapp,
       expectations,
       availability,
-      discovery
+      discovery,
+      profileImage: `./uploads/${upload.filename}`,
     }
   });
 
