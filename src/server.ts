@@ -4,7 +4,7 @@ import { z } from 'zod';
 import cors from '@fastify/cors';
 import multipart from '@fastify/multipart';
 import * as fs from 'fs';
-import util from 'util';
+import * as util from 'util';
 import { pipeline } from 'stream';
 
 const app = fastify();
