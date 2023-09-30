@@ -46,6 +46,7 @@ app.post('/users', async (request, reply) => {
     discovery,
     profileImage,
   } = createUsersSchema.parse(request.body);
+  console.log(profileImage);
   
   const upload = await profileImage.file();
   if (!upload) {
