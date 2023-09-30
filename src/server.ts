@@ -32,15 +32,10 @@ app.post('/users', async (request, reply) => {
     expectations: z.string(),
     availability: z.string(),
     discovery: z.string(),
-    profileImage: z.string()
+    profileImage: z.any()
   });
 
-  const upload = await request.file();
-  if (!upload) {
-    return reply.status(400).send({message: 'File is required.'});
-  }
-
-  await pump(upload.file, fs.createWriteStream(`./uploads/${upload.filename}`));
+  
   
   const { 
     name,
@@ -49,7 +44,15 @@ app.post('/users', async (request, reply) => {
     expectations,
     availability,
     discovery,
+    profileImage,
   } = createUsersSchema.parse(request.body);
+  
+  const upload = await profileImage.file();
+  if (!upload) {
+    return reply.status(400).send({message: 'File is required.'});
+  }
+
+  await pump(upload.file, fs.createWriteStream(`./uploads/${upload.filename}`));
 
   await prisma.user.create({
     data: {
