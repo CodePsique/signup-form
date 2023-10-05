@@ -19,5 +19,5 @@ model User {
   expectations String
   availability String
   discovery String
-  profileImage String @default("")
+  profileImage String? @default("")
 }

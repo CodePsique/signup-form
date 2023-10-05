@@ -1,78 +1,70 @@
+import express, { Request, Response } from "express";
+import multer, { Multer } from "multer";
+import path from "path";
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
-import fastify from "fastify";
-import { z } from 'zod';
-import cors from '@fastify/cors';
-import multipart from '@fastify/multipart';
-import * as fs from 'fs';
-import * as util from 'util';
-import { pipeline } from 'stream';
 
-const app = fastify();
-app.register(cors, {
-  origin: '*',
+const app = express();
+const PORT = 3333;
+
+const prisma = new PrismaClient();
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "images"));
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext);
+  },
 });
 
-app.register(multipart);
+const upload: Multer = multer({ storage: storage });
 
-const pump = util.promisify(pipeline);
+app.use(cors());
+app.use(express.json());
 
-const prisma = new PrismaClient()
+app.post("/users", upload.single("profileImage"), async (req: Request, res: Response) => {
+  const { name, email, whatsapp, expectations, discovery, availability } = req.body;
+  const profileImage = req.file;
 
-app.get('/users', async () => {
-  const users = await prisma.user.findMany();
+  try {
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        whatsapp,
+        expectations,
+        discovery,
+        availability,
+        profileImage: profileImage ? profileImage.filename : null,
+      },
+    });
 
-  return { users };
-})
+    console.log("Dados do usuário:", user);
+    console.log(profileImage);
 
-app.post('/users', async (request, reply) => {
-  const createUsersSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    whatsapp: z.string(),
-    expectations: z.string(),
-    availability: z.string(),
-    discovery: z.string(),
-    profileImage: z.any()
-  });
-
-  
-  
-  const { 
-    name,
-    email,
-    whatsapp,
-    expectations,
-    availability,
-    discovery,
-    profileImage,
-  } = createUsersSchema.parse(request.body);
-  console.log(profileImage);
-  
-  const upload = await profileImage.file();
-  if (!upload) {
-    return reply.status(400).send({message: 'File is required.'});
+    res.status(200).json({ message: "Inscrição enviada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao criar usuário:", error);
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
+});
 
-  await pump(upload.file, fs.createWriteStream(`./uploads/${upload.filename}`));
+app.get("/users", async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.findMany();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Erro ao buscar usuários:", error);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
 
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      whatsapp,
-      expectations,
-      availability,
-      discovery,
-      profileImage: `./uploads/${upload.filename}`,
-    }
-  });
-
-  return reply.status(201).send();
-})
-
-app.listen({
-  host: '0.0.0.0',
-  port: process.env.PORT ? Number(process.env.PORT) : 3333,
-}).then(() => {
-  console.log('HTTP Server Running')
-})
+app.listen(
+  process.env.PORT ? Number(process.env.PORT) : 3333,
+  '0.0.0.0',
+  () => {
+    console.log('HTTP Server Running');
+  }
+);
