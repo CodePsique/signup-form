@@ -37,7 +37,7 @@ app.post("/users", upload.single("profileImage"), async (req: Request, res: Resp
         expectations,
         discovery,
         availability,
-        profileImage: profileImage ? profileImage.filename : null,
+        profileImage: profileImage ? `src/images/${profileImage.filename}` : null,
       },
     });
 
@@ -60,6 +60,34 @@ app.get("/users", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
+
+app.get("/users/:id/image", async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const user = await prisma.user.findUnique({
+    where: {
+      id
+    }
+  });
+  if(user === null || user === undefined) {
+    res.status(404).json({ error: "User not found."})
+  } else {
+    res.sendFile(user.profileImage as string, { root: "."});
+  }
+})
+
+app.get("/users/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const user = await prisma.user.findUnique({
+    where: {
+      id
+    }
+  });
+  if(user === null || user === undefined) {
+    res.status(404).json({ error: "User not found."})
+  } else {
+    res.status(200).json(user);
+  }
+})
 
 app.listen(
   process.env.PORT ? Number(process.env.PORT) : 3333,
