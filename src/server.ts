@@ -1,4 +1,4 @@
-import * as express from "express";
+const express = require("express");
 import { Request, Response } from 'express';
 const multer = require('multer');
 import { Multer } from 'multer';
@@ -6,7 +6,7 @@ import * as path from "path";
 const cors =  require("cors");
 import { PrismaClient } from "@prisma/client";
 
-const app = express.default();
+const app = express();
 const PORT = 3333;
 
 const prisma = new PrismaClient();
