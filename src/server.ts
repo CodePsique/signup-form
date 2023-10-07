@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import multer, { Multer } from "multer";
-import path from "path";
+import * as path from "path";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 
