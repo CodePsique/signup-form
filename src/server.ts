@@ -1,19 +1,21 @@
-import express, { Request, Response } from "express";
-import multer, { Multer } from "multer";
+import * as express from "express";
+import { Request, Response } from 'express';
+const multer = require('multer');
+import { Multer } from 'multer';
 import * as path from "path";
-import cors from "cors";
+const cors =  require("cors");
 import { PrismaClient } from "@prisma/client";
 
-const app = express();
+const app = express.default();
 const PORT = 3333;
 
 const prisma = new PrismaClient();
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: any, file: any, cb: (arg0: null, arg1: string) => void) => {
     cb(null, path.join(__dirname, "images"));
   },
-  filename: (req, file, cb) => {
+  filename: (req: any, file: { originalname: string; }, cb: (arg0: null, arg1: string) => void) => {
     const ext = path.extname(file.originalname);
     cb(null, Date.now() + ext);
   },
