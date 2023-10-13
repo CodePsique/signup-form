@@ -4,7 +4,7 @@ import { Multer } from 'multer';
 import * as path from "path";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import * as fs from 'fs';
 
 const app = express();
