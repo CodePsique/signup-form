@@ -1,8 +1,9 @@
-import express from "express";
+const express = require("express");
+import { Request, Response } from 'express';
 import multer from 'multer';
 import { Multer } from 'multer';
 import * as path from "path";
-import cors from "cors";
+const cors =  require("cors");
 import { PrismaClient } from "@prisma/client";
 import * as AWS from 'aws-sdk';
 import * as fs from 'fs';
@@ -36,7 +37,7 @@ const upload: Multer = multer({ storage: storage });
 app.use(cors());
 app.use(express.json());
 
-app.post("/users", upload.single("profileImage"), async (req, res) => {
+app.post("/users", upload.single("profileImage"), async (req: Request, res: Response) => {
   const { name, email, whatsapp, expectations, discovery, availability } = req.body;
   const profileImage = req.file;
 
@@ -79,7 +80,7 @@ app.post("/users", upload.single("profileImage"), async (req, res) => {
   }
 });
 
-app.get("/users", async (req, res) => {
+app.get("/users", async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany();
     res.status(200).json(users);
@@ -89,7 +90,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.get("/users/:id/image", async (req, res) => {
+app.get("/users/:id/image", async (req: Request, res: Response) => {
   const id = req.params.id;
   const user = await prisma.user.findUnique({
     where: {
@@ -105,7 +106,7 @@ app.get("/users/:id/image", async (req, res) => {
   }
 });
 
-app.get("/users/:id", async (req, res) => {
+app.get("/users/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const user = await prisma.user.findUnique({
     where: {
