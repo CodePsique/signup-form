@@ -5,7 +5,7 @@ import * as path from "path";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import AWS from 'aws-sdk';
-import fs from 'fs';
+import * as fs from 'fs';
 
 const app = express();
 const PORT = 3333;
