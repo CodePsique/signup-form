@@ -1,6 +1,6 @@
 const express = require("express");
 import { Request, Response } from 'express';
-import multer from 'multer';
+const multer = require('multer');
 import { Multer } from 'multer';
 import * as path from "path";
 const cors =  require("cors");
@@ -23,10 +23,10 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: any, file: any, cb: (arg0: null, arg1: string) => void) => {
     cb(null, path.join(__dirname, "images"));
   },
-  filename: (req, file, cb) => {
+  filename: (req: any, file: { originalname: string; }, cb: (arg0: null, arg1: string) => void) => {
     const ext = path.extname(file.originalname);
     cb(null, Date.now() + ext);
   },
