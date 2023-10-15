@@ -8,6 +8,9 @@ import { PrismaClient } from "@prisma/client";
 import * as AWS from 'aws-sdk';
 import * as fs from 'fs';
 
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+
 const app = express();
 const PORT = 3333;
 
@@ -15,8 +18,8 @@ const prisma = new PrismaClient();
 
 // Configurar o SDK da AWS
 AWS.config.update({
-  accessKeyId: 'AKIAZUHEY5DDWDFNNR5D',
-  secretAccessKey: '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',
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
   region: 'us-east-2' // Substitua pela região AWS apropriada
 });
 
