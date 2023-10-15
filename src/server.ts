@@ -16,11 +16,10 @@ const PORT = 3333;
 
 const prisma = new PrismaClient();
 
-// Configurar o SDK da AWS
 AWS.config.update({
   accessKeyId: accessKeyId,
   secretAccessKey: secretAccessKey,
-  region: 'us-east-2' // Substitua pela região AWS apropriada
+  region: 'us-east-2'
 });
 
 const s3 = new AWS.S3();
@@ -48,20 +47,17 @@ app.post("/users", upload.single("profileImage"), async (req: Request, res: Resp
     let s3ImageUrl = null;
 
     if (profileImage) {
-      // Realizar o upload da imagem para o Amazon S3
       const s3Params = {
         Bucket: 'codepsique-group',
-        Key: `images/${profileImage.filename}`, // Caminho no S3
-        Body: fs.createReadStream(profileImage.path), // Ler o arquivo para upload
+        Key: `images/${profileImage.filename}`,
+        Body: fs.createReadStream(profileImage.path),
       };
 
       await s3.upload(s3Params).promise();
 
-      // Definir a URL do Amazon S3 para a imagem
-      s3ImageUrl = `https://s3://codepsique-group/${s3Params.Key}`; // Substitua S3_URL pela URL real do S3
+      s3ImageUrl = `https://s3://codepsique-group/${s3Params.Key}`;
     }
 
-    // Salvar os dados do usuário no banco de dados com a URL da imagem
     const user = await prisma.user.create({
       data: {
         name,
