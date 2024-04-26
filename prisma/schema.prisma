@@ -16,8 +16,6 @@ model User {
   name String
   email String
   whatsapp String
-  expectations String
-  availability String
-  discovery String
-  profileImage String? @default("")
+  idea String
+  currentPhase String
 }
